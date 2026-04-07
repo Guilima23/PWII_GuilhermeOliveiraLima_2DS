@@ -1,9 +1,67 @@
-
-head{
-font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #9eebd1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
-body{
-    background: #2A7B9B;
-background: linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(86, 119, 143, 1) 7%, rgba(52, 60, 87, 1) 100%);
-font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+.container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+h2 { 
+    text-align: center; 
+    color: #333; 
+    margin-top: 0;
+}
+
+.input-group { 
+    margin-bottom: 1.5rem; 
+}
+
+label { 
+    display: block; 
+    margin-bottom: 0.5rem; 
+    color: #666; 
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+button:hover { 
+    background-color: #218838; 
+}
+
+#resultado {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+    display: none; /* Fica invisível até ser preenchido */
 }
