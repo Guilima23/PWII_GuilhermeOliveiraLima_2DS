@@ -1,6 +1,5 @@
 <!DOCTYPE html> 
 <html lang="pt-BR"> 
- 
 <head> 
   <meta charset="UTF-8"> 
   <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
@@ -9,7 +8,6 @@
   <link rel="stylesheet" href="Style.css"> 
   <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'> 
 </head> 
- 
 <body> 
   <div class="container"> 
     <div class="header"> 
@@ -60,18 +58,16 @@
           <input id="m-funcao" type="text" required /> 
    
           <label for="m-salario">Salário (R$)</label> 
-          <input id="m-salario" type="number" required /> 
+          <input id="m-salario" type="number" step="0.01" required /> 
           
-          <div class="botoes-modal">
+          <div class="botoes-modal" style="margin-top: 15px; display: flex; gap: 10px;">
             <button type="submit" id="btnSalvar">Salvar</button> 
             <button type="button" onclick="fecharModal()">Cancelar</button>
           </div>
         </form> 
       </div> 
     </div> 
- 
   </div> 
-  <script src="funcionario.js"></script> 
+  <script src="funcionario.js"></script>
 </body> 
- 
-</html>>
+</html>
