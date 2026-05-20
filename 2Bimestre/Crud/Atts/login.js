@@ -21,14 +21,14 @@ function cadastrar() {
 
     // 3. Validação de Tamanho do RG (Exatamente 11 dígitos)
     if (rg.length !== 11) {
-        alert(" Erro: O RG deve conter exatamente 11 números.");
+        alert("Erro: O RG deve conter exatamente 11 números.");
         document.getElementById('rg').focus();
         return;
     }
 
     // 4. Validação de Tamanho do CPF (Exatamente 11 dígitos)
     if (cpf.length !== 11) {
-        alert("Erro: O CPF deve conter exatamente 11 números.");
+        alert(" Erro: O CPF deve conter exatamente 11 números.");
         document.getElementById('cpf').focus();
         return;
     }
