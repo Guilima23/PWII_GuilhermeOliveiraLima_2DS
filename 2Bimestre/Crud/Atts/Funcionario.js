@@ -1,7 +1,7 @@
 const modal = document.querySelector('.modal-container')
 const tbody = document.querySelector('tbody')
 
-// Mapeamento de todos os inputs do Modal
+// Mapeamento dos inputs do Modal
 const sNome = document.querySelector('#m-nome')
 const sIdade = document.querySelector('#m-idade')
 const sRg = document.querySelector('#m-rg')
@@ -10,12 +10,10 @@ const sEmail = document.querySelector('#m-email')
 const sFuncao = document.querySelector('#m-funcao')
 const sSalario = document.querySelector('#m-salario')
 
-const btnSalvar = document.querySelector('#btnSalvar')
+let itens = []
+let id = undefined
 
-let itens
-let id
-
-// Impede a digitação de letras em campos numéricos (Idade, RG, CPF)
+// Impede caracteres que não sejam números
 function validarNumeros(input) {
   input.value = input.value.replace(/[^0-9]/g, '');
 }
@@ -23,25 +21,22 @@ function validarNumeros(input) {
 function openModal(edit = false, index = 0) {
   modal.classList.add('active')
 
-  // Fecha o modal ao clicar fora dele
   modal.onclick = e => {
     if (e.target.className.indexOf('modal-container') !== -1) {
       fecharModal()
     }
   }
 
-  if (edit) {
-    // Se for edição, popula o modal com os dados existentes
-    sNome.value = itens[index].nome
-    sIdade.value = itens[index].idade
-    sRg.value = itens[index].rg
-    sCpf.value = itens[index].cpf
-    sEmail.value = itens[index].email
-    sFuncao.value = itens[index].funcao
-    sSalario.value = itens[index].salario
+  if (edit && itens[index]) {
+    sNome.value = itens[index].nome || ''
+    sIdade.value = itens[index].idade || ''
+    sRg.value = itens[index].rg || ''
+    sCpf.value = itens[index].cpf || ''
+    sEmail.value = itens[index].email || ''
+    sFuncao.value = itens[index].funcao || ''
+    sSalario.value = itens[index].salario || ''
     id = index
   } else {
-    // Se for inclusão, limpa os campos
     sNome.value = ''
     sIdade.value = ''
     sRg.value = ''
@@ -62,25 +57,27 @@ function editItem(index) {
 }
 
 function deleteItem(index) {
-  if (confirm(`Deseja realmente excluir o funcionário ${itens[index].nome}?`)) {
+  if (itens[index] && confirm(`Deseja realmente excluir o funcionário ${itens[index].nome}?`)) {
     itens.splice(index, 1)
     setItensBD()
     loadItens()
   }
 }
 
-// Cria a linha da tabela com todos os novos campos incluídos
 function insertItem(item, index) {
   let tr = document.createElement('tr')
 
+  const salarioVal = parseFloat(item.salario);
+  const salarioFormatado = !isNaN(salarioVal) ? salarioVal.toFixed(2) : '0.00';
+
   tr.innerHTML = `
-    <td>${item.nome}</td>
-    <td>${item.idade}</td>
-    <td>${item.rg}</td>
-    <td>${item.cpf}</td>
-    <td>${item.email}</td>
-    <td>${item.funcao}</td>
-    <td>R$ ${parseFloat(item.salario).toFixed(2)}</td>
+    <td>${item.nome || ''}</td>
+    <td>${item.idade || ''}</td>
+    <td>${item.rg || ''}</td>
+    <td>${item.cpf || ''}</td>
+    <td>${item.email || ''}</td>
+    <td>${item.funcao || ''}</td>
+    <td>R$ ${salarioFormatado}</td>
     <td class="acao">
       <button onclick="editItem(${index})">
         <i class='bx bx-edit'></i>
@@ -95,64 +92,71 @@ function insertItem(item, index) {
   tbody.appendChild(tr)
 }
 
-// Evento disparado ao submeter o formulário (Botão Salvar)
-document.getElementById('meuFormulario').onsubmit = e => {
-  e.preventDefault() // Impede a página de recarregar
+// Vincula o salvamento ao formulário para respeitar os validadores nativos
+const form = document.getElementById('meuFormulario')
+if (form) {
+  form.onsubmit = e => {
+    e.preventDefault()
 
-  // 1. Validações de tamanho para RG e CPF
-  if (sRg.value.length !== 11) {
-    alert(" Erro: O RG deve conter exatamente 11 números.");
-    sRg.focus();
-    return;
-  }
+    // Validações de tamanho estrito herdadas do código anterior
+    if (sRg.value.length !== 11) {
+      alert(" Erro: O RG deve conter exatamente 11 números.");
+      sRg.focus();
+      return;
+    }
 
-  if (sCpf.value.length !== 11) {
-    alert(" Erro: O CPF deve conter exatamente 11 números.");
-    sCpf.focus();
-    return;
-  }
+    if (sCpf.value.length !== 11) {
+      alert(" Erro: O CPF deve conter exatamente 11 números.");
+      sCpf.focus();
+      return;
+    }
 
-  // 2. Salva as alterações ou cria um novo registro
-  if (id !== undefined) {
-    itens[id].nome = sNome.value
-    itens[id].idade = sIdade.value
-    itens[id].rg = sRg.value
-    itens[id].cpf = sCpf.value
-    itens[id].email = sEmail.value
-    itens[id].funcao = sFuncao.value
-    itens[id].salario = sSalario.value
-    alert("🔄 Dados alterados com sucesso!");
-  } else {
-    itens.push({
-      nome: sNome.value,
-      idade: sIdade.value,
-      rg: sRg.value,
-      cpf: sCpf.value,
-      email: sEmail.value,
-      funcao: sFuncao.value,
+    const funcionario = {
+      nome: sNome.value.trim(),
+      idade: sIdade.value.trim(),
+      rg: sRg.value.trim(),
+      cpf: sCpf.value.trim(),
+      email: sEmail.value.trim(),
+      funcao: sFuncao.value.trim(),
       salario: sSalario.value
-    })
-    alert(" Funcionário cadastrado com sucesso!");
-  }
+    }
 
-  setItensBD()
-  fecharModal()
-  loadItens()
+    if (id !== undefined) {
+      itens[id] = funcionario
+      alert("Dados alterados com sucesso!");
+    } else {
+      itens.push(funcionario)
+      alert("Funcionário cadastrado com sucesso!");
+    }
+
+    setItensBD()
+    fecharModal()
+    loadItens()
+  }
 }
 
-// Renderiza a tabela na tela buscando os dados atualizados
 function loadItens() {
   itens = getItensBD()
   tbody.innerHTML = ''
-
-  itens.forEach((item, index) => {
-    insertItem(item, index)
-  })
+  
+  if (Array.isArray(itens)) {
+    itens.forEach((item, index) => {
+      if (item) insertItem(item, index)
+    })
+  }
 }
 
-// Funções de persistência no LocalStorage
-const getItensBD = () => JSON.parse(localStorage.getItem('dbfunc')) ?? []
-const setItensBD = () => localStorage.setItem('dbfunc', JSON.stringify(itens))
+function getItensBD() {
+  try {
+    return JSON.parse(localStorage.getItem('dbfunc')) || []
+  } catch (e) {
+    return []
+  }
+}
 
-// Inicializa a tabela ao carregar o sistema
+function setItensBD() {
+  localStorage.setItem('dbfunc', JSON.stringify(itens))
+}
+
+// Renderização inicial
 loadItens()
