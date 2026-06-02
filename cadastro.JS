@@ -1,1 +1,0 @@
-alert ("o formulário está pronto para ser respondido");
