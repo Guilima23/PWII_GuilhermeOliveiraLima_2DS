@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cadastro</title>
+    <script src="js/cadastro.JS"></script>
+ <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <link rel="stylesheet" href="Style.css">
+    <form action="/processar-dados" method="POST">
+        
+        <p>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required>
+        </p>
+       <p>
+        <label for="idade">Idade:</label>
+        <input type="idade" id="idade" name="idade" required>
+       </p>
+       <p>
+        <label for="rg"> RG:</label>
+        <input type="rg" id="RG" name="RG" required>
+       </p>
+       <label for="cpf"> CPF: </label>
+       <input typer="cpf" id="cpf" name="cpf" required>
+       <p>
+       <label for="email"> E-mail: </label>
+       <input typer="email" id="email" name="email" required>
+       </p>
+
+       <button type="button"> Cadastrar </button>
+       <button type="button"> Alterar</button>
+       <input type="reset" value="Limpar">
+      </form>
+       
+</body>
+</html>
