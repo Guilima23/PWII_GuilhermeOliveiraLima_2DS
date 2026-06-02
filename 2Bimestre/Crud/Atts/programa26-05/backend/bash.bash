@@ -1,0 +1,6 @@
+bash
+cd backend
+npm init -y
+npm install express mysql2 cors
+node server.js
+
